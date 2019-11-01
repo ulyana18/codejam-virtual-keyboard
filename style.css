@@ -1,3 +1,77 @@
 body {
-    background-color: red;
+    background-color: rgb(72, 67, 95);
+}
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 85%;
+    margin: 0 auto;
+    background-color: rgb(170, 91, 91);
+}
+.container__textarea {
+    width: 99%;
+    height: 200px;
+    margin: 0 auto;
+    background-color: #ffffff;
+}
+.container__keyboard {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 100%;
+    height: 300px;
+    margin-top: 20px;
+    background-color: rgba(226, 226, 222, 0.842);
+}
+.container__keyboard_row {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 98%;
+    height: 3em;
+    margin: 0 auto;
+}
+.container__keyboard_btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 43px;
+    height: 43px;
+    background-color: antiquewhite;
+    border: 1px solid #faf9f7;
+    border-radius: 3px;
+    cursor: pointer;
+}
+.container__keyboard_row:first-child .container__keyboard_btn {
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: flex-end;
+}
+.container__keyboard_btn p {
+    margin: 0;
+}
+.container__keyboard_btn p:first-child {
+    font-size: 12px;
+    align-self: flex-start;
+}
+.container__keyboard_btn:hover {
+    background-color: rgb(247, 212, 199);
+}
+.container__keyboard_btn-bs {
+    width: 100px;
+}
+.container__keyboard_btn-tab {
+    width: 70px;
+}
+.container__keyboard_btn-shift {
+    width: 120px;
+}
+.container__keyboard_btn-ctrl {
+    width: 6%;
+}
+.container__keyboard_btn-alt {
+    width: 8%;
+}
+.container__keyboard_btn-space {
+    width: 40%;
 }
