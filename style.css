@@ -22,6 +22,8 @@ body {
     height: 300px;
     margin-top: 20px;
     background-color: rgba(226, 226, 222, 0.842);
+
+    font-size: 18px;
 }
 .container__keyboard_row {
     display: flex;
@@ -41,14 +43,15 @@ body {
     border: 1px solid #faf9f7;
     border-radius: 3px;
     cursor: pointer;
+    color: #000000;
 }
 .container__keyboard_row:first-child .container__keyboard_btn {
     flex-direction: column;
     justify-content: space-around;
-    align-items: flex-end;
+    align-items: center;
 }
 .container__keyboard_btn p {
-    margin: 0;
+    margin: 0 3px;
 }
 .container__keyboard_btn p:first-child {
     font-size: 12px;
