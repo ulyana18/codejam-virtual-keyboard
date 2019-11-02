@@ -1,18 +1,25 @@
 body {
-    background-color: rgb(72, 67, 95);
-}
+    background: rgb(199,187,230);
+    background: linear-gradient(90deg, rgba(199,187,230,1) 0%, rgba(111,111,196,1) 49%, rgba(128,219,238,1) 100%);}
 .container {
     display: flex;
     flex-direction: column;
-    width: 85%;
+    width: 80%;
     margin: 0 auto;
-    background-color: rgb(170, 91, 91);
+    padding-top: 40px;
+
+    font-family: 'Montserrat', sans-serif;
 }
 .container__textarea {
-    width: 99%;
-    height: 200px;
+    width: 96%;
+    height: 160px;
     margin: 0 auto;
+    padding: 15px;
+    border-radius: 3px;
+    border: 5px solid rgba(230, 185, 174, 0.842);
     background-color: #ffffff;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
 }
 .container__keyboard {
     display: flex;
@@ -20,12 +27,12 @@ body {
     justify-content: space-around;
     width: 100%;
     height: 300px;
-    margin-top: 20px;
-    background-color: rgba(226, 226, 222, 0.842);
+    margin-top: 10px;
+    background-color: rgba(247, 200, 187, 0.842);
+    border-radius: 3px;
 
     font-size: 18px;
     text-transform: lowercase;
-
 }
 .container__keyboard_row {
     display: flex;
@@ -45,6 +52,7 @@ body {
     background-color: antiquewhite;
     border: 1px solid #faf9f7;
     border-radius: 3px;
+    box-shadow: 0px 0px 2px 1px rgba(66, 59, 55, 0.75);
     cursor: pointer;
     color: #000000;
 }
@@ -70,8 +78,14 @@ body {
     height: 100%;
     padding-top: 15px;
 }
+.container__keyboard_btn-bs p:last-child {
+    padding-top: 0;
+}
 .container__keyboard_btn:hover {
-    background-color: rgb(247, 212, 199) !important;
+    
+    box-shadow: inset 0px 0px 2px 1px rgba(71, 65, 62, 0.795);
+    border: 1px solid rgba(230, 230, 230, 0.75);
+
 }
 .container__keyboard_btn-bs {
     width: 100px;

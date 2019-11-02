@@ -22,15 +22,17 @@ let keyboardArray = [ {keyCode: 'Backquote', elem1: 'ё', elem2: "`"}, {keyCode:
 {keyCode: "AltRight", elem1: '', elem2: "alt"}, {keyCode: "ControlRight", elem1: '', elem2: "ctrl"}
 ];
 
-let lang = 0;
+let lang;
+if(localStorage == null) localStorage.setItem("lang", "0");
+
+//localStorage.setItem("lang", lang);
 let container = document.createElement('div');
 container.className = "container";
-container.innerHTML = "container";
 document.body.append(container);
 
 let textarea = document.createElement('textarea');
+textarea.value = "write here";
 textarea.className = "container__textarea";
-textarea.value = "textarea";
 container.append(textarea);
 
 let keyboard = document.createElement('div');
@@ -43,6 +45,7 @@ for(let i = 0; i < 5; i++) {
     keyboard.append(row);
 }
 let rowArray = document.querySelectorAll('.container__keyboard_row');
+let btnArray;
 
 addButtons();
 
@@ -83,15 +86,19 @@ function addButtons() {
         `container__keyboard_btn-space container__keyboard_btn container__keyboard_btn-${i}`;
         rowArray[4].append(btn);
     }
+    btnArray = document.querySelectorAll('.container__keyboard_btn');
+   if(localStorage.lang === '1')  {
+       localStorage.lang = '0';
+       changeLang();
+   }
+
 }
-let btnArray = document.querySelectorAll('.container__keyboard_btn');
 
 let highlightElem;
 let capslock = 0;
 keyboard.onclick = function(event) {
     let target = event.target;
     let symbol = target.querySelector('container__keyboard_btn-elem2');
-    console.log(target);
     if(target.innerHTML === '← backspace' || target.innerHTML === '← BACKSPACE') {
         bsFunc();
         return;
@@ -104,8 +111,12 @@ keyboard.onclick = function(event) {
         enterFunc();
         return;
     }
-    if(target.classList.contains('container__keyboard_btn-14')) {
-        tabFunc();
+    if(target.classList.contains('container__keyboard_btn-41') ||
+      target.classList.contains('container__keyboard_btn-52') ||
+      target.classList.contains('container__keyboard_btn-53') ||
+      target.classList.contains('container__keyboard_btn-54') ||
+      target.classList.contains('container__keyboard_btn-56') ||
+      target.classList.contains('container__keyboard_btn-57')) {
         return;
     }
     if(symbol === null) { 
@@ -149,7 +160,7 @@ function capslockFunc(target){
             btnArray[i].innerHTML = btnArray[i].innerHTML.toUpperCase();
             capslock = 1;
         }       
-        target.style.backgroundColor = "bisque";
+        target.style.backgroundColor = "rgb(255, 254, 248)";
 
     }  
     else {
@@ -181,7 +192,7 @@ function runOnKeys(func, ...codes) {
     document.addEventListener('keydown', function(event) {
       pressed.add(event.code);
 
-      for (let code of codes) { // все ли клавиши из набора нажаты?
+      for (let code of codes) { 
         if (!pressed.has(code)) {
           return;
         }
@@ -202,16 +213,23 @@ function runOnKeys(func, ...codes) {
     "ShiftLeft",
     "AltLeft"
   );
-
+  runOnKeys(
+    () => changeLang(),
+    "ShiftRight",
+    "AltRight"
+  );
+    console.log(localStorage.getItem("lang"));
   function changeLang() {
-      if(lang === 0) {
-          console.log('hiii');
+      if(localStorage.getItem("lang") === '0') {
             for(let i = 0; i < btnArray.length; i++) {
                 if(i === 0) btnArray[i].innerHTML = `<p class="container__keyboard_btn-elem1">${keyboardArray[i].elem2}</p>
                     <p class="container__keyboard_btn-elem2">${keyboardArray[i].elem1}</p>`;
                 if(i >= 14 && i < 52 && i !== 13 && i !== 14 && i !== 28 && i !== 40 && i !== 41) btnArray[i].innerHTML = keyboardArray[i].elem1;
             }
-            lang = 1;
+            //lang = '1';
+            localStorage.setItem("lang", '1');
+
+
         }
         else {
             for(let i = 0; i < btnArray.length; i++) {
@@ -219,8 +237,8 @@ function runOnKeys(func, ...codes) {
                     <p class="container__keyboard_btn-elem2">${keyboardArray[i].elem2}</p>`;
                 if(i >= 14 && i < 52 && i !== 13 && i !== 14 && i !== 28 && i !== 40 && i !== 41) btnArray[i].innerHTML = keyboardArray[i].elem2;
             }
-            lang = 0;
+            localStorage.setItem("lang", '0');
+
         }
-    //addButtons(1);
-  }
+    }
 
