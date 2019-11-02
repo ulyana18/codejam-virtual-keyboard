@@ -24,6 +24,8 @@ body {
     background-color: rgba(226, 226, 222, 0.842);
 
     font-size: 18px;
+    text-transform: lowercase;
+
 }
 .container__keyboard_row {
     display: flex;
@@ -37,6 +39,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
     width: 43px;
     height: 43px;
     background-color: antiquewhite;
@@ -52,28 +55,43 @@ body {
 }
 .container__keyboard_btn p {
     margin: 0 3px;
+    width: 100%;
 }
 .container__keyboard_btn p:first-child {
+    z-index: 1;
+    position: absolute;
+    top: 3px;
     font-size: 12px;
     align-self: flex-start;
 }
+.container__keyboard_btn p:last-child {
+    z-index: 100;
+    text-align: center;
+    height: 100%;
+    padding-top: 15px;
+}
 .container__keyboard_btn:hover {
-    background-color: rgb(247, 212, 199);
+    background-color: rgb(247, 212, 199) !important;
 }
 .container__keyboard_btn-bs {
     width: 100px;
+    text-transform: lowercase !important;
 }
 .container__keyboard_btn-tab {
     width: 70px;
+    text-transform: lowercase !important;
 }
 .container__keyboard_btn-shift {
     width: 120px;
+    text-transform: lowercase !important;
 }
 .container__keyboard_btn-ctrl {
     width: 6%;
+    text-transform: lowercase !important;
 }
 .container__keyboard_btn-alt {
     width: 8%;
+    text-transform: lowercase !important;
 }
 .container__keyboard_btn-space {
     width: 40%;
