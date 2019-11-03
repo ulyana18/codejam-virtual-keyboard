@@ -87,6 +87,9 @@ body {
     border: 1px solid rgba(230, 230, 230, 0.75);
 
 }
+.container__keyboard_btn:active {
+    background-color: #ffffff !important;
+}
 .container__keyboard_btn-bs {
     width: 100px;
     text-transform: lowercase !important;

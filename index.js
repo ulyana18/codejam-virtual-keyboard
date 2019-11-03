@@ -22,10 +22,8 @@ let keyboardArray = [ {keyCode: 'Backquote', elem1: 'ё', elem2: "`"}, {keyCode:
 {keyCode: "AltRight", elem1: '', elem2: "alt"}, {keyCode: "ControlRight", elem1: '', elem2: "ctrl"}
 ];
 
-let lang;
 if(localStorage == null) localStorage.setItem("lang", "0");
 
-//localStorage.setItem("lang", lang);
 let container = document.createElement('div');
 container.className = "container";
 document.body.append(container);
@@ -49,6 +47,8 @@ let btnArray;
 
 addButtons();
 
+/* function for adding buttons on the keyboard */
+
 function addButtons() {
     for(let i = 0; i < 14; i++) {
         let btn = document.createElement('div');
@@ -62,6 +62,7 @@ function addButtons() {
         btn.innerHTML = keyboardArray[i].elem2;
         btn.className = (i === 14 || i === 27) ? `container__keyboard_btn-tab container__keyboard_btn container__keyboard_btn-${i}` : 
         `container__keyboard_btn container__keyboard_btn-${i}`;
+        (i === 14) ? btn.tabIndex = "0" : 0; 
         rowArray[1].append(btn);
     }
     for(let i = 28; i < 41; i++) {
@@ -91,16 +92,20 @@ function addButtons() {
        localStorage.lang = '0';
        changeLang();
    }
-
 }
 
-let highlightElem;
-let capslock = 0;
+/* eventListener for onclick */
+
 keyboard.onclick = function(event) {
     let target = event.target;
+    if(target.classList.contains('container__keyboard_row') || target.classList.contains('container__keyboard')) return;
     let symbol = target.querySelector('container__keyboard_btn-elem2');
     if(target.innerHTML === '← backspace' || target.innerHTML === '← BACKSPACE') {
         bsFunc();
+        return;
+    }
+    if(target.classList.contains('container__keyboard_btn-14')) { 
+        tabFunc();
         return;
     }
     if(target.classList.contains('container__keyboard_btn-28')) { 
@@ -124,15 +129,21 @@ keyboard.onclick = function(event) {
         return;
     }
     textarea.value += symbol.innerHTML;
-    
 }
 
+
+/* eventListeners: keydown and keyup */
+
+let highlightElem;
+let capslock = 0;
+
 document.addEventListener('keydown', function(event) {
-    for(let i = 0; i < keyboardArray.length; i++) {
+  for(let i = 0; i < keyboardArray.length; i++) {
         let obj = keyboardArray[i];
         if(obj.keyCode === event.code) {
             highlightElem = document.querySelector(`.container__keyboard_btn-${i}`);
             if(event.code === 'CapsLock') { 
+                //console.log(capslock);
                 capslockFunc(highlightElem);
                 return;
             }
@@ -144,7 +155,7 @@ document.addEventListener('keydown', function(event) {
     }
 });
 document.addEventListener('keyup', function(event) {
-    for(let i =0; i < keyboardArray.length; i++) {
+  for(let i = 0; i < keyboardArray.length; i++) {
         let obj = keyboardArray[i];
         if(obj.keyCode === event.code && event.code !== 'CapsLock') {
             highlightElem = document.querySelector(`.container__keyboard_btn-${i}`);
@@ -153,25 +164,56 @@ document.addEventListener('keyup', function(event) {
     }
 });
 
+function runOnKeys(func, ...codes) {
+    let pressed = new Set();
+
+    document.addEventListener('keydown', function(event) {
+      pressed.add(event.code);
+      for (let code of codes) { 
+            if (!pressed.has(code)) return;
+        }
+      pressed.clear();
+
+      func();
+    });
+
+    document.addEventListener('keyup', function(event) {
+        pressed.delete(event.code);
+    });
+}
+
+runOnKeys(
+    () => changeLang(),
+    "ShiftLeft",
+    "AltLeft"
+);
+runOnKeys(
+    () => changeLang(),
+    "ShiftRight",
+    "AltRight"
+);
+
+
+ /* functions for onclick, keydown and keyup*/
+
 function capslockFunc(target){
     if(capslock === 0) {
         for(let i = 0; i < btnArray.length - 1; i++) {
             btnArray[i].style.textTransform = "uppercase";
             btnArray[i].innerHTML = btnArray[i].innerHTML.toUpperCase();
-            capslock = 1;
         }       
+        capslock = 1;
         target.style.backgroundColor = "rgb(255, 254, 248)";
-
+        return;
     }  
     else {
         for(let i = 0; i < btnArray.length - 1; i++) {
             btnArray[i].style.textTransform = "lowercase";
             btnArray[i].innerHTML = btnArray[i].innerHTML.toLowerCase();
-
-            capslock = 0;
         }
+        capslock = 0;
         target.style.backgroundColor = "antiquewhite";
-
+        return;
     }
 }
 function enterFunc() {
@@ -184,61 +226,23 @@ function bsFunc() {
    textarea.value = textarea.value.slice(0, -1);
 }
 
-//////////////////////////////////////////////////
+  /* function for btns shift + alt, that changes language*/
 
-function runOnKeys(func, ...codes) {
-    let pressed = new Set();
-
-    document.addEventListener('keydown', function(event) {
-      pressed.add(event.code);
-
-      for (let code of codes) { 
-        if (!pressed.has(code)) {
-          return;
-        }
-      }
-      pressed.clear();
-
-      func();
-    });
-
-    document.addEventListener('keyup', function(event) {
-      pressed.delete(event.code);
-    });
-
-  }
-
-  runOnKeys(
-    () => changeLang(),
-    "ShiftLeft",
-    "AltLeft"
-  );
-  runOnKeys(
-    () => changeLang(),
-    "ShiftRight",
-    "AltRight"
-  );
-    console.log(localStorage.getItem("lang"));
-  function changeLang() {
-      if(localStorage.getItem("lang") === '0') {
-            for(let i = 0; i < btnArray.length; i++) {
-                if(i === 0) btnArray[i].innerHTML = `<p class="container__keyboard_btn-elem1">${keyboardArray[i].elem2}</p>
-                    <p class="container__keyboard_btn-elem2">${keyboardArray[i].elem1}</p>`;
-                if(i >= 14 && i < 52 && i !== 13 && i !== 14 && i !== 28 && i !== 40 && i !== 41) btnArray[i].innerHTML = keyboardArray[i].elem1;
+function changeLang() {
+    if(localStorage.getItem("lang") === '0') {
+        for(let i = 0; i < btnArray.length; i++) {
+            if(i === 0) btnArray[i].innerHTML = `<p class="container__keyboard_btn-elem1">${keyboardArray[i].elem2}</p>
+                <p class="container__keyboard_btn-elem2">${keyboardArray[i].elem1}</p>`;
+            if(i >= 14 && i < 52 && i !== 13 && i !== 14 && i !== 28 && i !== 40 && i !== 41) btnArray[i].innerHTML = keyboardArray[i].elem1;
             }
-            //lang = '1';
             localStorage.setItem("lang", '1');
-
-
         }
-        else {
-            for(let i = 0; i < btnArray.length; i++) {
-                if(i === 0) btnArray[i].innerHTML = `<p class="container__keyboard_btn-elem1">${keyboardArray[i].elem1}</p>
-                    <p class="container__keyboard_btn-elem2">${keyboardArray[i].elem2}</p>`;
-                if(i >= 14 && i < 52 && i !== 13 && i !== 14 && i !== 28 && i !== 40 && i !== 41) btnArray[i].innerHTML = keyboardArray[i].elem2;
-            }
-            localStorage.setItem("lang", '0');
-
+    else {
+        for(let i = 0; i < btnArray.length; i++) {
+            if(i === 0) btnArray[i].innerHTML = `<p class="container__keyboard_btn-elem1">${keyboardArray[i].elem1}</p>
+            <p class="container__keyboard_btn-elem2">${keyboardArray[i].elem2}</p>`;
+            if(i >= 14 && i < 52 && i !== 13 && i !== 14 && i !== 28 && i !== 40 && i !== 41) btnArray[i].innerHTML = keyboardArray[i].elem2;
         }
+        localStorage.setItem("lang", '0');
     }
-
+}
