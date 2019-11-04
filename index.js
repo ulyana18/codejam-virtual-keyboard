@@ -29,7 +29,7 @@ container.className = "container";
 document.body.append(container);
 
 let textarea = document.createElement('textarea');
-textarea.value = "write here";
+textarea.placeholder = "write here";
 textarea.className = "container__textarea";
 container.append(textarea);
 
